@@ -1,0 +1,29 @@
+[req]
+prompt = no
+default_bits = 2048
+distinguished_name = subject
+req_extensions = v3_req_ext
+x509_extensions = v3_x509_ext
+
+[subject]
+countryName = NZ
+stateOrProvinceName = NI
+localityName = Wellington
+organizationName = MyOrg
+organizationalUnitName = MyUnitName
+emailAddress = myunitname@xtra.co.nz
+commonName = myorg@xtra.co.nz
+
+[v3_req_ext]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation,digitalSignature,keyEncipherment
+extendedKeyUsage = serverAuth,clientAuth
+
+[v3_x509_ext]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical,CA:FALSE
+subjectAltName = @alternate_names
+
+[alternate_names]
+DNS.1 = myorg@xtra.co.nz
