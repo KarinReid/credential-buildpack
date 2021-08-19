@@ -44,4 +44,4 @@ mkdir -p "${BUILD_DIR}/.profile.d"
 # custom_credentials.sh will be run when the app starts. Can be named whatever you want.
 CUSTOM_KEYSTORE_PATH="${BUILD_DIR}/.profile.d/custom_credentials.sh"
 # Make CUSTOM_KEYSTORE available as env variable when the script is run.
-echo "export CUSTOM_KEYSTORE=/var/vcap/deps/${INDEX}/${KEYSTORE}" > "${CUSTOM_KEYSTORE_PATH}"
+echo "export CUSTOM_KEYSTORE=/deps/${INDEX}/${KEYSTORE}" > "${CUSTOM_KEYSTORE_PATH}"
