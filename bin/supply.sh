@@ -28,7 +28,7 @@ pushd "${DEPS_DIR}/${INDEX}"
 echo Generating Self-signed Certificate
 echo Generating Key and certificate
 openssl genrsa -out $KEY
-openssl req -new -x509 -key $KEY -out $CERT -days 365 -config conf.cnf
+openssl req -new -x509 -key $KEY -out $CERT -days 365 -config /src/main/resources/conf.cnf
 
 echo Generating Keystore
 openssl pkcs12 -export -out $KEYSTORE -inkey $KEY -in $CERT -passout pass:$PASSWORD -name "$KEYSTORE"
