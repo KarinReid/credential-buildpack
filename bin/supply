@@ -33,8 +33,8 @@ openssl req -x509 -new -nodes -key $KEY -sha256 -days 365 -out $CERT -subj '//CN
 echo Generating Keystore
 openssl pkcs12 -export -out $KEYSTORE -inkey $KEY -in $CERT -passout pass:$PASSWORD -name "$KEYSTORE"
 
-echo Printing Keystore contents
-keytool -list -v -keystore $KEYSTORE -storepass $PASSWORD
+#echo Printing Keystore contents
+#keytool -list -v -keystore $KEYSTORE -storepass $PASSWORD
 popd
 
 # Create a .profile folder within the build directory
