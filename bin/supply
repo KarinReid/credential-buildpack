@@ -16,17 +16,30 @@ echo "INDEX         = ${INDEX}"
 
 # pushd: save current dir to stack. Move to new dir.
 pushd "${DEPS_DIR}/${INDEX}"
-KEY=privateKey.key
-CERT=myCert.crt
-KEYSTORE=myKeystore.pfx
 
-echo Generate Key and Certificate
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $KEY -out $CERT -subj '//CN=myorg.co.nz'
-echo Generating Keystore
-openssl pkcs12 -export -out $KEYSTORE -inkey $KEY -in $CERT -passout pass: -name "$KEYSTORE"
-ls
-echo Printing Keystore
-openssl pkcs12 -info -in $KEYSTORE -noout -passin pass:
+# Environment variables for s3 Bucket - enables AWS CLI to add, download and modify files
+SERVICE_INSTANCE_NAME=my-creds-bucket
+KEY_NAME=karinz
+cf7 create-service-key "${SERVICE_INSTANCE_NAME}" "${KEY_NAME}"
+S3_CREDENTIALS=`cf7 service-key "${SERVICE_INSTANCE_NAME}" "${KEY_NAME}" | tail -n +2`
+export AWS_ACCESS_KEY_ID=`echo "${S3_CREDENTIALS}" | jq -r .access_key_id`
+export AWS_SECRET_ACCESS_KEY=`echo "${S3_CREDENTIALS}" | jq -r .secret_key_id`
+export BUCKET_NAME=`echo "${S3_CREDENTIALS}" | jq -r .bucket`
+export AWS_DEFAULT_REGIONS=`echo "${S3_CREDENTIALS}" | jq -r '.region'`
+
+# Download the keystore from your s3 bucket
+KEYSTORE=`aws s3 cp s3://${BUCKET_NAME}/myKeystore.pfx`
+
+#KEY=privateKey.key
+#CERT=myCert.crt
+#KEYSTORE=myKeystore.pfx
+#echo Generate Key and Certificate
+#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $KEY -out $CERT -subj '//CN=myorg.co.nz'
+#echo Generating Keystore
+#openssl pkcs12 -export -out $KEYSTORE -inkey $KEY -in $CERT -passout pass: -name "$KEYSTORE"
+#ls
+#echo Printing Keystore
+#openssl pkcs12 -info -in $KEYSTORE -noout -passin pass:
 popd
 
 # Create a .profile folder within the build directory
