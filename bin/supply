@@ -20,8 +20,8 @@ pushd "${DEPS_DIR}/${INDEX}"
 # Environment variables for s3 Bucket - enables AWS CLI to add, download and modify files
 SERVICE_INSTANCE_NAME=my-creds-bucket
 KEY_NAME=karinz
-cf7 create-service-key "${SERVICE_INSTANCE_NAME}" "${KEY_NAME}"
-S3_CREDENTIALS=`cf7 service-key "${SERVICE_INSTANCE_NAME}" "${KEY_NAME}" | tail -n +2`
+cf create-service-key "${SERVICE_INSTANCE_NAME}" "${KEY_NAME}"
+S3_CREDENTIALS=`cf service-key "${SERVICE_INSTANCE_NAME}" "${KEY_NAME}" | tail -n +2`
 export AWS_ACCESS_KEY_ID=`echo "${S3_CREDENTIALS}" | jq -r .access_key_id`
 export AWS_SECRET_ACCESS_KEY=`echo "${S3_CREDENTIALS}" | jq -r .secret_key_id`
 export BUCKET_NAME=`echo "${S3_CREDENTIALS}" | jq -r .bucket`
