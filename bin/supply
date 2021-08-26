@@ -28,7 +28,7 @@ export BUCKET_NAME=`echo "${S3_CREDENTIALS}" | jq -r .bucket`
 export AWS_DEFAULT_REGIONS=`echo "${S3_CREDENTIALS}" | jq -r '.region'`
 
 # Download the keystore from your s3 bucket
-KEYSTORE=`aws s3 cp s3://${BUCKET_NAME}/myKeystore.pfx`
+KEYSTORE=`aws s3 cp s3://${BUCKET_NAME}/keystore.pfx`
 
 #KEY=privateKey.key
 #CERT=myCert.crt
