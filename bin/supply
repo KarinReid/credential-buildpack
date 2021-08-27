@@ -32,8 +32,6 @@ pushd "${DEPS_DIR}/${INDEX}"
 #   services:
 #    - s3-credentials
 
-echo "VCAPS_SERVICES = ${VCAPS_SERVICES}"
-
 #KEY=privateKey.key
 #CERT=myCert.crt
 #KEYSTORE=myKeystore.pfx
@@ -54,3 +52,4 @@ CUSTOM_KEYSTORE_PATH="${BUILD_DIR}/.profile.d/s3_credentials.sh"
 # Make CUSTOM_KEYSTORE available as env variable when the script is run.
 #echo "export CUSTOM_KEYSTORE=/deps/${INDEX}/${KEYSTORE}" > "${CUSTOM_KEYSTORE_PATH}"
 echo "CUSTOM_KEYSTORE_PATH = ${CUSTOM_KEYSTORE_PATH}"
+echo $VCAPS_SERVICES}
