@@ -47,9 +47,16 @@ popd
 # Create a .profile folder within the build directory
 mkdir -p "${BUILD_DIR}/.profile.d"
 # Create a param to reference build .profile + script
-# custom_credentials.sh will be run when the app starts. Can be named whatever you want.
-CUSTOM_KEYSTORE_PATH="${BUILD_DIR}/.profile.d/s3_credentials.sh"
+# s3_credentials.sh will be run when the app starts. Can be named whatever you want.
+S3_CREDENTIALS-SCRIPT_PATH="${BUILD_DIR}/.profile.d/s3_credentials.sh"
 # Make CUSTOM_KEYSTORE available as env variable when the script is run.
-#echo "export CUSTOM_KEYSTORE=/deps/${INDEX}/${KEYSTORE}" > "${CUSTOM_KEYSTORE_PATH}"
-echo "CUSTOM_KEYSTORE_PATH = ${CUSTOM_KEYSTORE_PATH}"
-echo $VCAP_SERVICES}
+#echo "export CUSTOM_KEYSTORE=/deps/${INDEX}/${KEYSTORE}" > "${S3_CREDENTIALS-SCRIPT_PATH}"
+echo "S3_CREDENTIALS-SCRIPT_PATH = ${S3_CREDENTIALS-SCRIPT_PATH}"
+
+echo $VCAP_SERVICES
+# Use VCAP_SERVICES to obtain the required certificate to run the test harness
+
+# Test we can retrieve a VCAP_SERVICE env variable
+echo "Print bucket_name"
+echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.bucket_name'
+
