@@ -18,6 +18,12 @@ pushd "${CACHE_DIR}"
   curl -L -O https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz
   tar xzf OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz
   export PATH=$PWD/jdk-11.0.10+9/bin:$PATH
+
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  sudo ./aws/install
+  which aws
+  aws --version
 popd
 
 # Reference keystore to be used with app
@@ -26,6 +32,8 @@ pushd "${DEPS_DIR}/${INDEX}"
 # Environment variables for s3 Bucket - enables AWS CLI to add, download and modify files
 # 1. Create a user provided serivce
 # cf7 cups s3-credentials - p '{"AWS_ACCESS_KEY":"", "AWS_SECRET_KEY":"", "REGION":"", "BUCKET_NAME":""}'
+# cf7 cups s3-credentials - p "AWS_ACCESS_KEY, AWS_SECRET_KEY, REGION, BUCKET_NAME"
+
 # Bind cups to the app
 # cf7 bind-service hello-world s3-credentials
 # Can also be done in the manifest.yml
@@ -59,4 +67,5 @@ echo $VCAP_SERVICES
 # Test we can retrieve a VCAP_SERVICE env variable
 echo "Print bucket_name"
 echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.bucket_name'
+
 
