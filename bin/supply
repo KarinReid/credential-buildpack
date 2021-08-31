@@ -49,6 +49,8 @@ pushd "${DEPS_DIR}/${INDEX}"
 #ls
 #echo Printing Keystore
 #openssl pkcs12 -info -in $KEYSTORE -noout -passin pass:
+
+aws s3api list-objects --bucket text-content --query 'Contents[].{Key: Key, Size:Size}'
 popd
 
 # Create a .profile folder within the build directory
