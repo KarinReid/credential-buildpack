@@ -31,7 +31,8 @@ popd
 # Reference keystore to be used with app
 pushd "${DEPS_DIR}/${INDEX}"
 
-aws s3api list-objects --bucket text-content --query 'Contents[].{Key: Key, Size:Size}'
+aws s3 cp s3://ir-ac-test --recursive --include "*.txt"
+ls
 popd
 
 # Create a .profile folder within the build directory
