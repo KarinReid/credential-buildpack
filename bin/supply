@@ -31,7 +31,8 @@ popd
 # Reference keystore to be used with app
 pushd "${DEPS_DIR}/${INDEX}"
 
-aws s3 cp s3://ir-ac-test --recursive --include "*.txt"
+# Copy a file from s3 bucket to current working directory
+aws s3 cp s3://ir-ac-test/mytestfile.txt ./
 ls
 popd
 
