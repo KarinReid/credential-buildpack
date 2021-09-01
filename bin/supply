@@ -31,12 +31,21 @@ popd
 # Reference keystore to be used with app
 pushd "${DEPS_DIR}/${INDEX}"
 
-aws configure list
+# aws configure list
 # Setup credentials
+echo "Setting credentials"
+export AWS_ACCESS_KEY_ID="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_ACCESS_KEY_ID')"
+export AWS_SECRET_ACCESS_KEY="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_SECRET_ACCESS_KEY')"
+export AWS_DEFAULT_REGION="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_DEFAULT_REGION')"
+BUCKET_NAME="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.BUCKET_NAME')"
 
+echo BUCKET_NAME
+echo AWS_SECRET_ACCESS_KEY
+echo AWS_DEFAULT_REGION
+echo BUCKET_NAME
 
 # Copy a file from s3 bucket to current working directory
-#aws s3 cp s3://ir-ac-test/mytestfile.txt ./
+aws s3 cp s3://ir-ac-test/mytestfile.txt ./
 ls
 popd
 
@@ -48,14 +57,6 @@ S3_CREDENTIALS_SCRIPT_PATH="${BUILD_DIR}/.profile.d/s3_credentials.sh"
 # Make CUSTOM_KEYSTORE available as env variable when the script is run.
 #echo "export CUSTOM_KEYSTORE=/deps/${INDEX}/${KEYSTORE}" > "${S3_CREDENTIALS_SCRIPT_PATH}"
 echo $S3_CREDENTIALS_SCRIPT_PATH
-
-echo $VCAP_SERVICES
-# Use VCAP_SERVICES to obtain the required certificate to run the test harness
-
-# Test we can retrieve a VCAP_SERVICE env variable
-echo "Print bucket_name"
-echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.BUCKET_NAME'
-echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.S3_URI'
 
 
 
