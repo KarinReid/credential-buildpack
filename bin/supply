@@ -29,16 +29,16 @@ pushd "${CACHE_DIR}"
 popd
 
 pushd "${DEPS_DIR}/${INDEX}"
-echo "Setting credentials"
-AWS_ACCESS_KEY_ID="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_ACCESS_KEY_ID')"
-AWS_SECRET_ACCESS_KEY="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_SECRET_ACCESS_KEY')"
-AWS_DEFAULT_REGION="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_DEFAULT_REGION')"
-BUCKET_NAME="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.BUCKET_NAME')"
-
-echo "export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID"
-echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
-echo "export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
-echo "$BUCKET_NAME"
+#echo "Setting credentials"
+#AWS_ACCESS_KEY_ID="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_ACCESS_KEY_ID')"
+#AWS_SECRET_ACCESS_KEY="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_SECRET_ACCESS_KEY')"
+#AWS_DEFAULT_REGION="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_DEFAULT_REGION')"
+#BUCKET_NAME="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.BUCKET_NAME')"
+#
+#echo "export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID"
+#echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
+#echo "export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
+#echo "$BUCKET_NAME"
 
 aws configure list
 
@@ -49,6 +49,7 @@ aws configure list
 # mkdir -p "dirname" = create sub-directories of a directory
 echo "Create a directory"
 mkdir -p .keystore/prod
+ls
 
 # Copy a file from s3 bucket to current working directory
 #aws s3 cp s3://ir-ac-test/mytestfile.txt ./.keystore/prod
