@@ -28,11 +28,7 @@ pushd "${CACHE_DIR}"
   export PATH=/tmp/bin:$PATH
 popd
 
-# Reference keystore to be used with app
 pushd "${DEPS_DIR}/${INDEX}"
-
-# aws configure list
-# Setup credentials
 echo "Setting credentials"
 AWS_ACCESS_KEY_ID="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_ACCESS_KEY_ID')"
 AWS_SECRET_ACCESS_KEY="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_SECRET_ACCESS_KEY')"
@@ -44,15 +40,24 @@ echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
 echo "export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
 echo "$BUCKET_NAME"
 
+echo "AWS ENV VARIABLES:"
+  env | grep AWS
+  aws s3api list-objects --bucket ir-ac-test --query 'Contents[].{Key: Key, Size:Size}'
+
+aws configure list
+
+# mkdir -p "dirname" = create sub-directories of a directory
+mkdir -p .keystore/prod
+
 # Copy a file from s3 bucket to current working directory
-aws s3 cp s3://ir-ac-test/mytestfile.txt ./
-ls
+aws s3 cp s3://ir-ac-test/mytestfile.txt ./.keystore/prod
+
 popd
 
-# Create a .profile folder within the build directory
+
 mkdir -p "${BUILD_DIR}/.profile.d"
-# Create a param to reference build .profile + script
-# s3_credentials.sh will be run when the app starts. Can be named whatever you want.
+
+# s3_credentials.sh will be run when the app starts.
 S3_CREDENTIALS_SCRIPT_PATH="${BUILD_DIR}/.profile.d/s3_credentials.sh"
 # Make CUSTOM_KEYSTORE available as env variable when the script is run.
 #echo "export CUSTOM_KEYSTORE=/deps/${INDEX}/${KEYSTORE}" > "${S3_CREDENTIALS_SCRIPT_PATH}"
