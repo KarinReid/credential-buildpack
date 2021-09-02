@@ -42,14 +42,14 @@ pushd "${DEPS_DIR}/${INDEX}"
 
 aws configure list
 
-#echo "AWS ENV VARIABLES:"
-#env | grep AWS
-#aws s3api list-objects --bucket ir-ac-test --query 'Contents[].{Key: Key, Size:Size}'
+echo "AWS ENV VARIABLES:"
+env | grep AWS
+aws s3api list-objects --bucket ir-ac-test --query 'Contents[].{Key: Key, Size:Size}'
 
 # mkdir -p "dirname" = create sub-directories of a directory
 echo "Create a directory"
 mkdir -p .keystore/prod
-ls
+ls -la
 
 # Copy a file from s3 bucket to current working directory
 #aws s3 cp s3://ir-ac-test/mytestfile.txt ./.keystore/prod
