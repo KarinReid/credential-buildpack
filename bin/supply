@@ -30,6 +30,7 @@ pushd "${CACHE_DIR}"
 popd
 
 pushd "${DEPS_DIR}/${INDEX}"
+
 echo $VCAP_SERVICES
 
 echo "Setting credentials"
