@@ -44,8 +44,6 @@ export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
 
 aws configure list
 
-#AWS_CONFIG_FILE=
-
 echo "AWS ENV VARIABLES:"
 env | grep AWS
 #aws s3api list-objects --bucket ir-ac-test --query 'Contents[].{Key: Key, Size:Size}'
@@ -56,8 +54,8 @@ mkdir -p .keystore/prod
 ls -la
 
 # Copy a file from s3 bucket to current working directory
-#aws s3 cp s3://ir-ac-test/mytestfile.txt ./.keystore/prod
-
+aws s3 cp s3://ir-ac-test/mytestfile.txt ./.keystore/prod
+ls -la
 popd
 
 
