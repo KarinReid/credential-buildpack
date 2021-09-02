@@ -25,7 +25,8 @@ pushd "${CACHE_DIR}"
   # -b install directory is symbolically linked to the file aws in the specified path
   ./aws/install -i /tmp/aws-cli -b /tmp/bin
   /tmp/bin/aws --version
-#  export PATH=/tmp/bin:$PATH
+  ls -la
+  export PATH=/tmp/bin:$PATH
 popd
 
 pushd "${DEPS_DIR}/${INDEX}"
