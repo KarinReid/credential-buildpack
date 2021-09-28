@@ -33,40 +33,41 @@ pushd "${DEPS_DIR}/${INDEX}"
 
 echo $VCAP_SERVICES
 
-echo "Setting credentials"
+echo "Setting s3 credentials"
 AWS_ACCESS_KEY_ID="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_ACCESS_KEY_ID')"
 AWS_SECRET_ACCESS_KEY="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_SECRET_ACCESS_KEY')"
 AWS_DEFAULT_REGION="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_DEFAULT_REGION')"
+AWS_BUCKET="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_BUCKET')"
+
+echo "Setting system properties"
+KEYSTORE_SECRET="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.KEYSTORE_SECRET')"
 
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
 
-aws configure list
+# aws configured list of credentials
+#aws configure list
 
-echo "AWS ENV VARIABLES:"
-env | grep AWS
-#aws s3api list-objects --bucket ir-ac-test --query 'Contents[].{Key: Key, Size:Size}'
+# mkdir -p ".dirname/anotherDirName" = create sub-directories of a directory
+echo "Create keystore directory"
+#mkdir -p .keystore/
+mkdir .keystore/
 
-# mkdir -p "dirname" = create sub-directories of a directory
-echo "Create a directory"
-mkdir -p .keystore/prod
-ls -la
-
-# Copy a file from s3 bucket to current working directory
-aws s3 cp s3://ir-ac-test/mytestfile.txt ./.keystore/prod
-ls -la
-ls -r  .keystore/prod
+# Copy a file from s3 bucket to a specified directory
+aws s3 cp s3://$AWS_BUCKET/$KEYSTORE ./.keystore/
+#aws s3 cp s3://$AWS_BUCKET/$KEYSTORE_PATH/$ENVIRONMENT/$KEYSTORE ./.keystore/
+ls -r  .keystore/
 popd
-
 
 mkdir -p "${BUILD_DIR}/.profile.d"
 
-# s3_credentials.sh will be run when the app starts.
+# s3_credentials.sh - export env vars for app to consume at start up
 S3_CREDENTIALS_SCRIPT_PATH="${BUILD_DIR}/.profile.d/s3_credentials.sh"
-# Make CUSTOM_KEYSTORE available as env variable when the script is run.
-#echo "export CUSTOM_KEYSTORE=/deps/${INDEX}/${KEYSTORE}" > "${S3_CREDENTIALS_SCRIPT_PATH}"
+echo "export KEYSTORE_PATH=/deps/${INDEX}/${KEYSTORE}" > "${S3_CREDENTIALS_SCRIPT_PATH}"
 echo $S3_CREDENTIALS_SCRIPT_PATH
+
+# wip - export .pfx destination to make it available to app
 
 
 
