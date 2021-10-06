@@ -5,6 +5,7 @@ BUILD_DIR=${1}
 CACHE_DIR=${2}
 DEPS_DIR=${3}
 INDEX=${4}
+
 BUILDPACK_DIR=$(dirname $(readlink -f ${BASH_SOURCE%/*}))
 
 echo "BUILDPACK_DIR   = ${BUILDPACK_DIR}"
@@ -33,13 +34,12 @@ pushd "${DEPS_DIR}/${INDEX}"
 
 echo $VCAP_SERVICES
 
-echo "Setting s3 credentials"
+echo "Setting s3 bucket credentials"
 AWS_ACCESS_KEY_ID="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_ACCESS_KEY_ID')"
 AWS_SECRET_ACCESS_KEY="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_SECRET_ACCESS_KEY')"
 AWS_DEFAULT_REGION="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_DEFAULT_REGION')"
 AWS_BUCKET="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_BUCKET')"
-
-echo "Setting system properties"
+AWS_KEYSTORE="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.AWS_KEYSTORE')"
 KEYSTORE_SECRET="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credentials.KEYSTORE_SECRET')"
 
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
@@ -47,7 +47,7 @@ export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
 
 # aws configured list of credentials
-#aws configure list
+aws configure list
 
 # mkdir -p ".dirname/anotherDirName" = create sub-directories of a directory
 echo "Create keystore directory"
