@@ -45,27 +45,24 @@ KEYSTORE_SECRET="$(echo $VCAP_SERVICES | jq -r '.["user-provided"][0].credential
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
-
-# aws configured list of credentials
 aws configure list
 
 # mkdir -p ".dirname/anotherDirName" = create sub-directories of a directory
-echo "Create keystore directory"
-#mkdir -p .keystore/
 mkdir .keystore/
 
 # Copy a file from s3 bucket to a specified directory
 aws s3 cp s3://$AWS_BUCKET/$KEYSTORE ./.keystore/
-#aws s3 cp s3://$AWS_BUCKET/$KEYSTORE_PATH/$ENVIRONMENT/$KEYSTORE ./.keystore/
-ls -r  .keystore/
+ls -r .keystore/
+APP_KEYSTORE_PATH=/deps/${INDEX}/./.keystore/$AWS_KEYSTORE
 popd
 
 mkdir -p "${BUILD_DIR}/.profile.d"
 
 # s3_credentials.sh - export env vars for app to consume at start up
-S3_CREDENTIALS_SCRIPT_PATH="${BUILD_DIR}/.profile.d/s3_credentials.sh"
-echo "export KEYSTORE_PATH=/deps/${INDEX}/${KEYSTORE}" > "${S3_CREDENTIALS_SCRIPT_PATH}"
-echo $S3_CREDENTIALS_SCRIPT_PATH
+STARTUP_SCRIPT="${BUILD_DIR}/.profile.d/startup.sh"
+echo "export APP_KEYSTORE_PATH" > "${STARTUP_SCRIPT}"
+echo "export KEYSTORE_SECRET" >> "${STARTUP_SCRIPT}"
+echo $STARTUP_SCRIPT
 
 # wip - export .pfx destination to make it available to app
 
