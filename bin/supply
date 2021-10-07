@@ -61,7 +61,7 @@ mkdir -p "${BUILD_DIR}/.profile.d"
 # s3_credentials.sh - export env vars for app to consume at start up
 STARTUP_SCRIPT="${BUILD_DIR}/.profile.d/startup.sh"
 echo "export APP_KEYSTORE_PATH" > "${STARTUP_SCRIPT}"
-echo "export KEYSTORE_SECRET" > "${STARTUP_SCRIPT}"
+echo "export KEYSTORE_SECRET" >> "${STARTUP_SCRIPT}"
 echo $STARTUP_SCRIPT
 
 # wip - export .pfx destination to make it available to app
