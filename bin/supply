@@ -53,7 +53,7 @@ mkdir .keystore/
 # Copy a file from s3 bucket to a specified directory
 aws s3 cp s3://$AWS_BUCKET/$AWS_KEYSTORE ./.keystore/
 ls -r .keystore/
-APP_KEYSTORE_PATH=/deps/${INDEX}/./.keystore/$AWS_KEYSTORE
+APP_KEYSTORE_PATH=/deps/${INDEX}/.keystore/$AWS_KEYSTORE
 popd
 
 mkdir -p "${BUILD_DIR}/.profile.d"
